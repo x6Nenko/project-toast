@@ -18,24 +18,18 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ message, variant, isToastVisible, setIsToastVisible }) {
-  const variantStyle = styles[variant];
+function Toast({ children, variant, isToastVisible, setIsToastVisible }) {
   const Icon = ICONS_BY_VARIANT[variant];
-  const isVisible = isToastVisible ? 'flex' : 'none';
-
-  function handleClose() {
-    setIsToastVisible(false);
-  }
   
   return (
-    <div style={{display: isVisible}} className={`${styles.toast} ${variantStyle}`}>
+    <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
         <Icon size={24} />
       </div>
       <p className={styles.content}>
-        {message}
+        {children}
       </p>
-      <button className={styles.closeButton} onClick={handleClose}>
+      <button className={styles.closeButton} onClick={() => setIsToastVisible(false)}>
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
