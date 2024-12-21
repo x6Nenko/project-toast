@@ -1,7 +1,7 @@
 import React from "react";
 
 import Button from "../Button";
-import Toast from "../Toast";
+import ToastShelf from "../ToastShelf";
 
 import styles from "./ToastPlayground.module.css";
 
@@ -10,13 +10,18 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 function ToastPlayground() {
   const [message, setMessage] = React.useState("");
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const [isToastVisible, setIsToastVisible] = React.useState(false);
+  const [stack, setStack] = React.useState([]);
 
-  function handleClick() {
-    setIsToastVisible(true);
-    setTimeout(() => {
-      setIsToastVisible(false);
-    }, 5000);
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const id = Math.random();
+    setStack([...stack, { id, message, variant }]);
+    setMessage("");
+    setVariant(VARIANT_OPTIONS[0]);
+    // setTimeout(() => {
+    //   setIsToastVisible(false);
+    // }, 5000);
   }
 
   return (
@@ -26,18 +31,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {isToastVisible && (
-        <Toast
-          message={message}
-          variant={variant}
-          isToastVisible={isToastVisible}
-          setIsToastVisible={setIsToastVisible}
-        >
-          {message}
-        </Toast>
-      )}
+      <ToastShelf stack={stack} setStack={setStack} />
 
-      <div className={styles.controlsWrapper}>
+      <form onSubmit={(event) => handleSubmit(event)} className={styles.controlsWrapper}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -78,10 +74,10 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button onClick={handleClick}>Pop Toast!</Button>
+            <Button>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
