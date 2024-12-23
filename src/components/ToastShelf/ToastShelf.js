@@ -8,7 +8,7 @@ function ToastShelf() {
   const { toastStack, setToastStack } = React.useContext(ToastContext);
   
   return (
-    <ol className={styles.wrapper}>
+    <ol className={styles.wrapper} role="region" aria-live="polite" aria-label="Notification">
       {toastStack.length > 0 && toastStack.map(({ id, message, variant }) => (
         <li key={id} className={styles.toastWrapper}>
           <Toast variant={variant} dismissToast={() => setToastStack(toastStack.filter((toast) => toast.id !== id))}>
