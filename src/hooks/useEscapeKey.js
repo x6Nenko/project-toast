@@ -1,13 +1,10 @@
 import React from "react";
-import { ToastContext } from "../components/ToastProvider/ToastProvider";
 
-export default function useEscapeKey(onEscape) {
-  const { toastStack, setToastStack } = React.useContext(ToastContext);
-  
+export default function useEscapeKey(escapeKey, callback) {    
   React.useEffect(() => {
     function handleKeyDown(event) {
-      if (event.code === onEscape) {
-        setToastStack([]);
+      if (event.code === escapeKey) {
+        callback(event);
       }
     }
 
@@ -16,5 +13,5 @@ export default function useEscapeKey(onEscape) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [toastStack, setToastStack, onEscape]);
+  }, [escapeKey, callback]);
 }
